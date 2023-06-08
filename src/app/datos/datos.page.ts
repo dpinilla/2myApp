@@ -1,7 +1,9 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Component, OnInit } from '@angular/core'
+import { ActivatedRoute, Router } from '@angular/router'
 import { Datos } from './models/datos'
-import { ConexionService } from '../services/conexion.service';
+import { ConexionService } from '../services/conexion.service'
+import { ModalController } from '@ionic/angular'
+import { InsertDatosPage } from './insert-datos/insert-datos.page'
 
 @Component({
   selector: 'app-datos',
@@ -15,7 +17,8 @@ export class DatosPage implements OnInit {
   datos! : Datos[]
   constructor(private activateRoute:ActivatedRoute,
               private router: Router,
-              private conexion: ConexionService) { }
+              private conexion: ConexionService,
+              private modalCtrl:ModalController) { }
 
   ngOnInit() {
     this.myNombre = this.activateRoute.snapshot.paramMap.get('nombre')
@@ -28,6 +31,16 @@ export class DatosPage implements OnInit {
         this.datos = data
       }
     )
+  }
+
+  insert(){
+    this.modalCtrl.create({
+      component: InsertDatosPage
+    })
+    .then((modal) =>{
+      modal.present()
+      return modal.onDidDismiss
+    })
   }
 
   /* visualizaDatos(){
