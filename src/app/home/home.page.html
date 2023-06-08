@@ -1,0 +1,19 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>
+      Blank
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-avatar id="myAvatar">
+    <img src="../../assets/img/mybuho.png">
+  </ion-avatar>
+  <strong><h1 id="nombre">Mi primera App</h1></strong>
+  <ion-item>
+    <ion-label position="floating">Digite Nombre</ion-label>
+    <ion-input id="myinput" [(ngModel)]="myNombre"></ion-input>
+  </ion-item>
+  <ion-button expand="full" (click)="enviar()">Enviar</ion-button>
+</ion-content>
