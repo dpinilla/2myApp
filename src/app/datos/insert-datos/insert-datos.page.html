@@ -5,7 +5,7 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
-   <form [formGroup]="form">
+   <form [formGroup]="form" (submit)="onSubmit()">
       <ion-item>
         <ion-input
           type="text"

@@ -1,12 +1,18 @@
 import { HttpClient } from '@angular/common/http';
 import { ReturnStatement } from '@angular/compiler';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, Subject, tap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ConexionService {
+  private _refresh$ = new Subject<void>() 
+
+  get refresh$(){
+    return this._refresh$
+  }
+
   url = "http://127.0.0.1:80" //Dirección de backend
   constructor(private http:HttpClient) { }
 
@@ -15,9 +21,12 @@ export class ConexionService {
     .get(this.url+'/consultaDatos')
   }
 
-  insertarDatos(datos:any){
+  insertarDatos(datos:any):Observable<any>{
     return this.http
     .post(this.url+"/insertarDatos", JSON.stringify(datos))
+    .pipe(tap(()=>{
+       this.refresh$.next()
+    }))
   }
 
 }
