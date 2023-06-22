@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-//import { Datos } from '../models/datos'
+import { Datos } from '../models/datos'
 import { ConexionService } from 'src/app/services/conexion.service';
 import { ModalController, ToastController } from '@ionic/angular';
 
@@ -11,12 +11,14 @@ import { ModalController, ToastController } from '@ionic/angular';
 })
 export class InsertDatosPage implements OnInit {
 
-  //@Input() datos!:Partial<Datos>
+  @Input() datos!:Partial<Datos>
+  isUpdate:boolean = false
   constructor(private conexion:ConexionService,
               private toastController:ToastController,
               private modalCtrl: ModalController) { }
               
   ngOnInit() {
+    this.updateDatos()
   }
 
   form = new FormGroup({
@@ -41,16 +43,50 @@ export class InsertDatosPage implements OnInit {
     ]),
   })
 
+  updateDatos(){
+    if(this.datos){
+        this.isUpdate = true
+        this.form.patchValue(
+          {
+            datNombre: this.datos.datNombre,
+            datApellido: this.datos.datApellido,
+            datEdad: this.datos.datEdad,
+            datDeporte: this.datos.datDeporte,
+            datImagen: this.datos.datImagen
+          }
+        )
+    }
+  }
+
   onSubmit(){
     console.log("ingresó")
-   /*  const dat:Datos = {
+   
+
+    if(this.isUpdate){
+      //Modificar
+
+       const dat:Datos = {
+        datId: this.datos.datId,
       datNombre: this.form.value.datNombre!,
       datApellido: this.form.value.datApellido!,
       datEdad: this.form.value.datEdad!,
       datDeporte: this.form.value.datDeporte!,
       datImagen: this.form.value.datImagen!
-    }  */
-
+    } 
+     
+      
+      
+    this.conexion.updateDatos(dat).subscribe(
+      data=>{
+          this.presentToast('Datos modificados con éxito')
+          this.closeModal()
+      }, error =>{
+        this.presentToast('Error al modificar')
+          this.closeModal()
+      }
+      )
+    }else{
+      //Guardar
     const dat = this.form.value
     this.conexion.insertarDatos(dat).subscribe(
       data=>{
@@ -61,6 +97,7 @@ export class InsertDatosPage implements OnInit {
           this.closeModal()
       }
       )
+    }
   }
 
   async closeModal(){

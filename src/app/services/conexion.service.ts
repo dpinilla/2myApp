@@ -30,8 +30,18 @@ export class ConexionService {
   }
 
   removeDatos(datId:any){
+    //const enviar={datId:datId}
     return this.http
     .post(this.url+"/removeDatos", JSON.stringify(datId))
+    .pipe(tap(()=>{
+       this.refresh$.next()
+    }))
+  }
+
+  updateDatos(datos:any){
+    //const enviar={datId:datId}
+    return this.http
+    .post(this.url+"/updateDatos", JSON.stringify(datos))
     .pipe(tap(()=>{
        this.refresh$.next()
     }))

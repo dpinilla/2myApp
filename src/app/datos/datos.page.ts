@@ -45,6 +45,16 @@ export class DatosPage implements OnInit {
     })
   }
 
+  updateDatos(datos:Datos){
+    this.modalCtrl.create({
+      component: InsertDatosPage, componentProps: {datos}
+    })
+    .then((modal) =>{
+      modal.present()
+      return modal.onDidDismiss
+    })
+  }
+
   /* visualizaDatos(){
     this.datos=[
       {
@@ -88,6 +98,9 @@ export class DatosPage implements OnInit {
   }
 
   removeDatos(datId:any){
+    let remove:any = {}
+    remove["datId"] = datId
+
     this.alertCtrl.create({
       header: 'Eliminar!',
       message: '¿Está seguro que desea ELIMINAR?',
@@ -99,7 +112,7 @@ export class DatosPage implements OnInit {
         {
           text: 'Eliminar',
           handler: () => {
-            this.conexion.removeDatos(datId).subscribe(
+            this.conexion.removeDatos(remove).subscribe(
               data =>{
                 this.presentToast("El usuario fué eliminado con éxito")
               })
