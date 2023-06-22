@@ -23,8 +23,8 @@
           <ion-accordion value="first">
             <ion-item slot="header">
               <ion-label>{{myDatos.datNombre}} {{myDatos.datApellido}}</ion-label>
-              <ion-icon color="danger" slot="end" name="trash-outline"></ion-icon>
-              <ion-icon color="primary" slot="end" name="create-outline"></ion-icon>
+              <ion-icon color="danger" (click)="removeDatos(myDatos.datId)" slot="end" name="trash-outline"></ion-icon>
+              <!-- <ion-icon color="primary" (click)="updateDatos()" slot="end" name="create-outline"></ion-icon> -->
             </ion-item>
             <div class="ion-padding" slot="content">
               <div *ngIf="myDatos.datEdad > 18; else menor">

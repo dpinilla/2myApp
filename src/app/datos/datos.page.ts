@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core'
 import { ActivatedRoute, Router } from '@angular/router'
 import { Datos } from './models/datos'
 import { ConexionService } from '../services/conexion.service'
-import { ModalController } from '@ionic/angular'
+import { AlertController, ModalController, ToastController } from '@ionic/angular'
 import { InsertDatosPage } from './insert-datos/insert-datos.page'
 
 @Component({
@@ -18,7 +18,9 @@ export class DatosPage implements OnInit {
   constructor(private activateRoute:ActivatedRoute,
               private router: Router,
               private conexion: ConexionService,
-              private modalCtrl:ModalController) { }
+              private modalCtrl:ModalController,
+              private alertCtrl:AlertController,
+              private toastController: ToastController) { }
 
   ngOnInit() {
     this.myNombre = this.activateRoute.snapshot.paramMap.get('nombre')
@@ -83,6 +85,37 @@ export class DatosPage implements OnInit {
         event.target.complete()
       }
     )
+  }
+
+  removeDatos(datId:any){
+    this.alertCtrl.create({
+      header: 'Eliminar!',
+      message: '¿Está seguro que desea ELIMINAR?',
+      buttons: [
+        {
+          text: 'Cancelar',
+          
+        },
+        {
+          text: 'Eliminar',
+          handler: () => {
+            this.conexion.removeDatos(datId).subscribe(
+              data =>{
+                this.presentToast("El usuario fué eliminado con éxito")
+              })
+          },
+        },
+      ],
+    })
+    .then((alertEl) => alertEl.present());
+  }
+
+  async presentToast(msg:string) {
+    const toast = await this.toastController.create({
+      message: msg,
+      duration: 2000
+    });
+    toast.present();
   }
 
 }

@@ -29,4 +29,12 @@ export class ConexionService {
     }))
   }
 
+  removeDatos(datId:any){
+    return this.http
+    .post(this.url+"/removeDatos", JSON.stringify(datId))
+    .pipe(tap(()=>{
+       this.refresh$.next()
+    }))
+  }
+
 }
